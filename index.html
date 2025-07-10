@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Quanto Custa? - Jogo de Matemática</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+    }
+
+    .question {
+      margin: 20px 0;
+    }
+
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .options button:hover {
+      background-color: #2980b9;
+    }
+
+    .feedback {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .correct {
+      color: green;
+    }
+
+    .wrong {
+      color: red;
+    }
+
+    .image {
+      text-align: center;
+    }
+
+    .image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .next-button {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .next-button:hover {
+      background-color: #219150;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Quanto Custa? 🛒</h1>
+    <p>Resolva as perguntas para avançar!</p>
+
+    <div class="image">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Fruits.jpg/640px-Fruits.jpg"
+        alt="Frutas no mercado">
+    </div>
+
+    <div class="question" id="questionText"></div>
+    <div class="options" id="optionsContainer"></div>
+    <div id="feedback" class="feedback"></div>
+    <button class="next-button" id="nextButton" onclick="nextLevel()">Próximo nível ➡️</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        text: "Banana: R$ 3,00 | Melancia: R$ 5,00\n\nQuanto custa comprar uma banana e uma melancia?",
+        options: ["R$ 6,00", "R$ 8,00", "R$ 9,00"],
+        correct: 1
+      },
+      {
+        text: "Maçã: R$ 2,00 | Uva: R$ 4,00\n\nQuanto custa comprar uma maçã e uma uva?",
+        options: ["R$ 7,00", "R$ 5,00", "R$ 6,00"],
+        correct: 2
+      },
+      {
+        text: "Laranja: R$ 3,00 | Melão: R$ 7,00\n\nQuanto custa comprar uma laranja e um melão?",
+        options: ["R$ 9,00", "R$ 10,00", "R$ 8,00"],
+        correct: 1
+      }
+    ];
+
+    let currentQuestion = 0;
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("questionText").textContent = q.text;
+      const optionsDiv = document.getElementById("optionsContainer");
+      optionsDiv.innerHTML = "";
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("nextButton").style.display = "none";
+
+      q.options.forEach((opt, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(index);
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const q = questions[currentQuestion];
+      const feedback = document.getElementById("feedback");
+      if (selected === q.correct) {
+        feedback.textContent = "✅ Correto!";
+        feedback.className = "feedback correct";
+        document.getElementById("nextButton").style.display = "block";
+      } else {
+        feedback.textContent = "❌ Resposta errada. Tente novamente.";
+        feedback.className = "feedback wrong";
+      }
+    }
+
+    function nextLevel() {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        document.getElementById("questionText").textContent = "🎉 Parabéns! Você completou todos os níveis.";
+        document.getElementById("optionsContainer").innerHTML = "";
+        document.getElementById("nextButton").style.display = "none";
+        document.getElementById("feedback").textContent = "";
+      }
+    }
+
+    // Inicia o primeiro nível
+    showQuestion();
+  </script>
+</body>
+
+</html>
